@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Survey Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <div>
+            <img src="/images/logo-iu-inkythuatso-01.png" alt="logoIU" width="200" class="mb-4">
+        </div>
+
+        <h1 style="color: #008080;">Survey</h1>
+        <p>If you have a moment, we'd appreciate it if you would fill out this survey.</p>
+        <hr>
+        <form action="/submit-survey" method="post">
+            <h2 style="color: #008080;">Your information:</h2>
+
+            <div class="form-group">
+                <label for="fname">First name:</label>
+                <input type="text" class="form-control" id="fname" name="fname">
+            </div>
+
+            <div class="form-group">
+                <label for="lname">Last name:</label>
+                <input type="text" class="form-control" id="lname" name="lname">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
+            </div>
+
+            <hr>
+
+            <h2 style="color: #008080;">How did you hear about us?</h2>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="searchEngine" name="howHeard" value="searchEngine">
+                <label class="form-check-label" for="searchEngine">Search Engine</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="wordOfMouth" name="howHeard" value="wordOfMouth">
+                <label class="form-check-label" for="wordOfMouth">Word of Mouth</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="socialMedia" name="howHeard" value="socialMedia">
+                <label class="form-check-label" for="socialMedia">Social Media</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="other" name="howHeard" value="other">
+                <label class="form-check-label" for="other">Other</label>
+            </div>
+
+            <hr>
+
+            <h2 style="color: #008080;">Would you like to receive announcements about new CDs and special offers?</h2>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="yes" name="announcements" value="general">
+                <label class="form-check-label" for="yes">YES, I'd like that.</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="sendEmail" name="announcements_email"
+                    value="email_specific">
+                <label class="form-check-label" for="sendEmail">YES, please send me email announcements.</label>
+            </div>
+
+            <hr>
+
+            <div class="form-group mt-4"> <label for="contactMethod">Please contact me by:</label>
+                <select class="form-control" name="contactMethod" id="contactMethod">
+                    <option value="email_or_postal">Email or postal mail</option>
+                    <option value="email_only">Email only</option>
+                    <option value="postal_only">Postal mail only</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+
+        </form>
+    </div>
+
+</body>
+
+</html>
