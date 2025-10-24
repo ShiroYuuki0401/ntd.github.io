@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Lab01 — Trang bắt đầu</title>
+		<meta name="description" content="Trang bắt đầu cho Lab01. Liên kết nhanh đến bài tập, CV và tài liệu trong repository." />
+		<style>
+			:root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#6ee7b7}
+			html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#071127 0%, #0f1724 100%);color:#e6eef6}
+			.wrap{max-width:920px;margin:48px auto;padding:28px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.04));border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+			header{display:flex;align-items:center;gap:16px}
+			.logo{width:68px;height:68px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#60a5fa);display:flex;align-items:center;justify-content:center;font-weight:700;color:#052020}
+			h1{margin:0;font-size:1.6rem}
+			p.lead{color:var(--muted);margin-top:6px}
+			.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}
+			.card{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+			a.btn{display:inline-block;padding:10px 14px;border-radius:8px;background:var(--accent);color:#052020;font-weight:600;text-decoration:none}
+			footer{margin-top:20px;color:var(--muted);font-size:0.9rem}
+			code{background:#071022;padding:2px 6px;border-radius:6px;color:#cde}
+			@media (max-width:520px){.wrap{margin:20px;padding:18px}}
+		</style>
+	</head>
+	<body>
+		<main class="wrap">
+			<header>
+				<div class="logo">Lab</div>
+				<div>
+					<h1>Lab01 — Trang bắt đầu</h1>
+					<p class="lead">Trang này là điểm khởi đầu cho repository Lab01. Dùng trang này để truy cập nhanh tới bài tập, CV và tài liệu.</p>
+				</div>
+			</header>
+
+			<section class="grid" aria-label="Liên kết nhanh">
+				<article class="card">
+					<h3>Bài tập 1</h3>
+					<p class="lead">Mở bài tập trong thư mục <code>Ex1/</code>. Bao gồm giao diện CV và stylesheet.</p>
+					<p><a class="btn" href="Ex1/cv.html">Mở CV (Ex1)</a></p>
+				</article>
+
+				<article class="card">
+					<h3>Stylesheet</h3>
+					<p class="lead">File CSS mẫu nằm trong <code>Ex1/styles.css</code>.</p>
+					<p><a class="btn" href="Ex1/styles.css">Mở styles.css</a></p>
+				</article>
+
+				<article class="card">
+					<h3>Cơ sở dữ liệu / SQL</h3>
+					<p class="lead">Tệp SQL chứa dữ liệu hoặc câu lệnh dùng cho lab.</p>
+					<p><a class="btn" href="itcsiu22243.sql">Mở itcsiu22243.sql</a></p>
+				</article>
+
+				<article class="card">
+					<h3>Repository</h3>
+					<p class="lead">Truy cập trang repo trên GitHub để bật GitHub Pages (chọn branch và folder). Nếu muốn, bạn có thể dùng branch <code>gh-pages</code> hoặc bật Pages từ branch <code>main</code>.</p>
+					<p><a class="btn" href="#" onclick="alert('Mở repository trên GitHub từ giao diện GitHub của bạn (đăng nhập cần thiết).');return false;">Mở repo</a></p>
+				</article>
+			</section>
+
+			<section style="margin-top:20px" aria-label="Hướng dẫn nhanh">
+				<div class="card">
+					<h3>Hướng dẫn bật GitHub Pages</h3>
+					<ol style="color:var(--muted);margin:0 0 0 18px;padding-left:0">
+						<li>Đẩy (commit & push) `index.html` lên repository trên GitHub.</li>
+						<li>Vào Settings → Pages, chọn branch (ví dụ: <code>main</code>) và thư mục <code>/ (root)</code>.</li>
+						<li>Lưu thiết lập; chờ vài phút để trang được build. URL sẽ hiển thị trong phần Pages.</li>
+					</ol>
+				</div>
+			</section>
+
+			<footer>
+				<p>Phiên bản nhỏ gọn — sửa nội dung này trong <code>index.html</code> nếu cần. Nếu bạn muốn, tôi có thể thêm favicon, OG tags, hoặc tự động hóa build.</p>
+			</footer>
+		</main>
+	</body>
+</html>
