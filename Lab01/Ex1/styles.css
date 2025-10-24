@@ -1,0 +1,138 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    border: 2px solid #333;
+}
+
+/* Header Styles */
+header {
+    border-top: 2px solid #333;
+    padding-top: 20px;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+header p {
+    color: #2e8b57; /* Green color for title/role */
+    font-style: italic;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+header p:last-child {
+    color: #333;
+    font-style: normal;
+    margin-top: 15px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Main Content Styles */
+main {
+    margin-bottom: 40px;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+section h2 {
+    color: #2e8b57; /* Green color for section headings */
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Education Section */
+#education article p:first-child {
+    color: #0066cc; /* Blue color for school name */
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#education article p:nth-child(2) {
+    margin-top: 5px;
+    font-size: 0.95rem;
+}
+
+/* Skills Section */
+#skills ul {
+    list-style-type: none;
+}
+
+#skills li {
+    margin-bottom: 5px;
+}
+
+/* Experience Section */
+#experience article {
+    margin-top: 15px;
+}
+
+#experience article > p:first-child {
+    color: #0066cc; /* Blue color for company/job title */
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#experience article > p:nth-child(2) {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+#experience article ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+#experience article p:last-child {
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Optional: Add "Across the Internet" section if you want to include it later */
+/* This matches the placeholder in the image */
+#social-links {
+    margin-top: 30px;
+}
+
+#social-links h2 {
+    color: #2e8b57;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+#social-links p {
+    font-style: italic;
+}
