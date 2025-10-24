@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Contact Nguyen Thanh Dat" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <title>Contact - Nguyen Thanh Dat</title>
+</head>
+
+<body>
+    <header>
+        <h1>Nguyen Thanh Dat</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="policy.html">Policy</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Contact Me</h2>
+        <form novalidate>
+            <fieldset>
+                <legend>Send a Message</legend>
+
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required minlength="2">
+
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" pattern="[0-9]{10,11}">
+
+                <label for="password">Password (for demo)</label>
+                <input type="password" id="password" name="password" minlength="6">
+
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="13" max="100" step="1">
+
+                <label for="birthdate">Birthdate</label>
+                <input type="date" id="birthdate" name="birthdate">
+
+                <label for="color">Favorite Color</label>
+                <input type="color" id="color" name="color" value="#2563eb">
+
+                <label for="budget">Project Budget ($)</label>
+                <input type="range" id="budget" name="budget" min="100" max="10000" step="100">
+                <output for="budget" id="budgetValue">100</output>
+
+                <label>Preferred Contact Method</label>
+                <div>
+                    <input type="radio" id="email-method" name="contact-method" value="email" checked>
+                    <label for="email-method">Email</label>
+                    <input type="radio" id="phone-method" name="contact-method" value="phone">
+                    <label for="phone-method">Phone</label>
+                </div>
+
+                <label>
+                    <input type="checkbox" name="newsletter" value="yes"> Subscribe to newsletter
+                </label>
+                <label>
+                    <input type="checkbox" name="terms" required> I agree to the <a href="policy.html">terms</a> *
+                </label>
+
+                <label for="country">Country</label>
+                <input list="countries" id="country" name="country">
+                <datalist id="countries">
+                    <option value="Vietnam">
+                    <option value="USA">
+                    <option value="Japan">
+                    <option value="Germany">
+                </datalist>
+
+                <label for="service">Service Interested In</label>
+                <select id="service" name="service">
+                    <optgroup label="Web Services">
+                        <option value="portfolio">Personal Portfolio</option>
+                        <option value="business">Business Website</option>
+                        <option value="blog">Blog Setup</option>
+                    </optgroup>
+                </select>
+
+                <label for="message">Message *</label>
+                <textarea id="message" name="message" required minlength="10"></textarea>
+
+                <label for="resume">Upload Resume (PDF)</label>
+                <input type="file" id="resume" name="resume" accept=".pdf">
+
+                <input type="hidden" name="form-id" value="contact-portfolio-2025">
+
+                <button type="submit">Send Message</button>
+                <button type="reset">Reset Form</button>
+            </fieldset>
+        </form>
+    </main>
+    <footer>... (footer) ...</footer>
+
+    <script>
+        document.getElementById('budget').addEventListener('input', e => {
+            document.getElementById('budgetValue').textContent = e.target.value;
+        });
+    </script>
+</body>
+
+</html>
