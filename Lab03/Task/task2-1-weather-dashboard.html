@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .search-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .search-box input {
+      width: 70%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .search-box button {
+      width: 28%;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 2%;
+    }
+    .weather-card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+    .current-weather {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .temp-display {
+      font-size: 60px;
+      font-weight: bold;
+    }
+    .forecast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .forecast-item {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 18px;
+      color: white;
+      display: none;
+    }
+    .error {
+      background: #dc3545;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .recent-searches {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .recent-city {
+      padding: 5px 15px;
+      background: #e9ecef;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .recent-city:hover {
+      background: #dee2e6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="color: white; text-align: center; margin-bottom: 30px;">Weather Dashboard</h1>
+    <div class="search-box">
+      <input type="text" id="cityInput" placeholder="Enter city name..." onkeypress="if(event.key=='Enter') searchWeather()">
+      <button onclick="searchWeather()">Search</button>
+      <div class="recent-searches" id="recentSearches"></div>
+    </div>
+    <div id="errorMessage" class="error"></div>
+    <div id="loading" class="loading">Loading...</div>
+    <div id="weatherDisplay"></div>
+    <div id="forecastDisplay"></div>
+  </div>
+
+  <script>
+    const API_KEY = 'dd83d6f32ad1d0fe1eb977c33f306cc1';
+
+    async function fetchWeather(city) {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'City not found');
+        }
+        return await response.json();
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    async function fetchForecast(city) {
+      const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'City not found');
+        }
+        return await response.json();
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    function getWeatherEmoji(condition) {
+      const conditionLower = condition.toLowerCase();
+      if (conditionLower.includes('clear')) return '☀️';
+      if (conditionLower.includes('cloud')) return '🌤️';
+      if (conditionLower.includes('rain')) return '🌧️';
+      if (conditionLower.includes('snow')) return '❄️';
+      return '';
+    }
+
+    function displayWeather(data) {
+      const weatherDisplay = document.getElementById('weatherDisplay');
+      const temp = data.main.temp.toFixed(1);
+      const condition = data.weather[0].description;
+      const humidity = data.main.humidity;
+      const windSpeed = data.wind.speed;
+      const icon = getWeatherEmoji(data.weather[0].main);
+
+      weatherDisplay.innerHTML = `
+        <div class="weather-card">
+          <div class="current-weather">
+            <div class="temp-display">${temp}°C</div>
+            <div>
+              <div>${icon} ${condition.charAt(0).toUpperCase() + condition.slice(1)}</div>
+              <div>Humidity: ${humidity}%</div>
+              <div>Wind: ${windSpeed} km/h</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function displayForecast(data) {
+      const forecastDisplay = document.getElementById('forecastDisplay');
+      const dailyForecasts = data.list.filter(item => 
+        item.dt_txt.includes('12:00:00')
+      ).slice(0, 5);
+
+      if (dailyForecasts.length === 0) {
+        forecastDisplay.innerHTML = '';
+        return;
+      }
+
+      let html = '<div class="weather-card"><h2>5-Day Forecast</h2><div class="forecast-grid">';
+      dailyForecasts.forEach(item => {
+        const date = new Date(item.dt_txt).toLocaleDateString('en-US', { weekday: 'short' });
+        const temp = item.main.temp.toFixed(1);
+        const condition = item.weather[0].description;
+        const icon = getWeatherEmoji(item.weather[0].main);
+        
+        html += `
+          <div class="forecast-item">
+            <div>${date}</div>
+            <div>${icon}</div>
+            <div>${temp}°C</div>
+          </div>
+        `;
+      });
+      html += '</div></div>';
+      forecastDisplay.innerHTML = html;
+    }
+
+    async function searchWeather() {
+      const cityInput = document.getElementById('cityInput');
+      const city = cityInput.value.trim();
+      if (!city) return;
+
+      const loadingEl = document.getElementById('loading');
+      const errorEl = document.getElementById('errorMessage');
+      
+      loadingEl.style.display = 'block';
+      errorEl.style.display = 'none';
+      errorEl.textContent = '';
+      
+      try {
+        const weatherData = await fetchWeather(city);
+        displayWeather(weatherData);
+        
+        const forecastData = await fetchForecast(city);
+        displayForecast(forecastData);
+        
+        saveRecentSearch(city);
+        cityInput.value = '';
+      } catch (error) {
+        errorEl.textContent = error.message;
+        errorEl.style.display = 'block';
+      } finally {
+        loadingEl.style.display = 'none';
+      }
+    }
+
+    function saveRecentSearch(city) {
+      let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+      searches = searches.filter(c => c !== city);
+      searches.unshift(city);
+      
+      if (searches.length > 5) {
+        searches.pop();
+      }
+      
+      localStorage.setItem('recentSearches', JSON.stringify(searches));
+      loadRecentSearches();
+    }
+
+    function loadRecentSearches() {
+      const searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+      const recentSearchesEl = document.getElementById('recentSearches');
+      recentSearchesEl.innerHTML = '';
+      
+      searches.forEach(city => {
+        const cityEl = document.createElement('div');
+        cityEl.className = 'recent-city';
+        cityEl.textContent = city;
+        cityEl.addEventListener('click', () => {
+          document.getElementById('cityInput').value = city;
+          searchWeather();
+        });
+        recentSearchesEl.appendChild(cityEl);
+      });
+    }
+
+    function showError(message) {
+      const errorEl = document.getElementById('errorMessage');
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+    }
+
+    function clearError() {
+      const errorEl = document.getElementById('errorMessage');
+      errorEl.textContent = '';
+      errorEl.style.display = 'none';
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadRecentSearches();
+    });
+  </script>
+</body>
+</html>
