@@ -15,21 +15,25 @@
         /* Same CSS as add_student.jsp */
         body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
         .container {
-            max-width: 600px; margin: 50px auto; background: white;
+            max-width: 600px;
+            margin: 50px auto; background: white;
             padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .form-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
         input[type="text"], input[type="email"] {
-            width: 100%; padding: 10px; border: 1px solid #ddd;
+            width: 100%;
+            padding: 10px; border: 1px solid #ddd;
             border-radius: 5px; box-sizing: border-box;
         }
         .btn-submit {
-            background: #ffc107; color: #333; padding: 12px 30px;
+            background: #ffc107;
+            color: #333; padding: 12px 30px;
             border: none; border-radius: 5px; cursor: pointer;
         }
         .btn-cancel {
-            background: #6c757d; color: white; padding: 12px 30px;
+            background: #6c757d;
+            color: white; padding: 12px 30px;
             text-decoration: none; display: inline-block; border-radius: 5px;
         }
         .error { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
@@ -38,7 +42,6 @@
 <body>
 <%
     String idParam = request.getParameter("id");
-    
     if (idParam == null || idParam.trim().isEmpty()) {
         response.sendRedirect("list_students.jsp?error=Invalid student ID");
         return;
@@ -60,7 +63,6 @@
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
-    
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(
@@ -68,7 +70,6 @@
             "root",
             "root"
         );
-        
         String sql = "SELECT * FROM students WHERE id = ?";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, studentId);
@@ -104,10 +105,10 @@
         <h2>✏️ Edit Student Information</h2>
         
         <% if (request.getParameter("error") != null) { %>
-            <div class="error"><%= request.getParameter("error") %></div>
+            <div class="message error"><%= request.getParameter("error") %></div>
         <% } %>
         
-        <form action="process_edit.jsp" method="POST">
+        <form action="process_edit.jsp" method="POST" onsubmit="return submitForm(this)">
             <input type="hidden" name="id" value="<%= studentId %>">
             
             <div class="form-group">
@@ -115,7 +116,7 @@
                 <input type="text" name="student_code" value="<%= studentCode %>" readonly>
                 <small style="color: #666;">Cannot be changed</small>
             </div>
-            
+           
             <div class="form-group">
                 <label>Full Name *</label>
                 <input type="text" name="full_name" value="<%= fullName %>" required>
@@ -135,6 +136,23 @@
             <a href="list_students.jsp" class="btn-cancel">Cancel</a>
         </form>
     </div>
+    
+    <script>
+    // 7.2a: Auto-hide messages
+    setTimeout(function() {
+        var messages = document.querySelectorAll('.message');
+        messages.forEach(function(msg) {
+            msg.style.display = 'none';
+        });
+    }, 3000);
+
+    // 7.2b: Loading state for submit button
+    function submitForm(form) {
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
+        return true; // Allows the form to submit
+    }
+    </script>
 </body>
 </html>
-
