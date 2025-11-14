@@ -75,42 +75,63 @@
         <h2>➕ Add New Student</h2>
         
         <% if (request.getParameter("error") != null) { %>
-            <div class="error">
+            <div class="message error">
                 <%= request.getParameter("error") %>
             </div>
         <% } %>
-        
-        <form action="process_add.jsp" method="POST">
+     
+        <form action="process_add.jsp" method="POST" onsubmit="return submitForm(this)">
             <div class="form-group">
                 <label for="student_code">Student Code <span class="required">*</span></label>
                 <input type="text" id="student_code" name="student_code" 
                        placeholder="e.g., SV001" required 
                        pattern="[A-Z]{2}[0-9]{3,}"
-                       title="Format: 2 uppercase letters + 3+ digits">
+                       title="Format: 2 uppercase letters + 3+ digits"
+                       value="<%= (request.getParameter("student_code") != null) ? request.getParameter("student_code") : "" %>">
             </div>
             
             <div class="form-group">
                 <label for="full_name">Full Name <span class="required">*</span></label>
                 <input type="text" id="full_name" name="full_name" 
-                       placeholder="Enter full name" required>
+                       placeholder="Enter full name" required
+                       value="<%= (request.getParameter("full_name") != null) ? request.getParameter("full_name") : "" %>">
             </div>
             
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" 
-                       placeholder="student@email.com">
+                       placeholder="student@email.com"
+                       value="<%= (request.getParameter("email") != null) ? request.getParameter("email") : "" %>">
             </div>
             
             <div class="form-group">
                 <label for="major">Major</label>
                 <input type="text" id="major" name="major" 
-                       placeholder="e.g., Computer Science">
+                       placeholder="e.g., Computer Science"
+                       value="<%= (request.getParameter("major") != null) ? request.getParameter("major") : "" %>">
             </div>
             
             <button type="submit" class="btn-submit">💾 Save Student</button>
             <a href="list_students.jsp" class="btn-cancel">Cancel</a>
-        </form>
+         </form>
     </div>
+    
+    <script>
+    // 7.2a: Auto-hide messages
+    setTimeout(function() {
+        var messages = document.querySelectorAll('.message');
+        messages.forEach(function(msg) {
+            msg.style.display = 'none';
+        });
+    }, 3000);
+
+    // 7.2b: Loading state for submit button
+    function submitForm(form) {
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
+        return true; // Allows the form to submit
+    }
+    </script>
 </body>
 </html>
-
