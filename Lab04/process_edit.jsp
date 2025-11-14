@@ -6,6 +6,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.net.URLEncoder" %>
 <%
     String idParam = request.getParameter("id");
     String studentCode = request.getParameter("student_code");
@@ -15,10 +16,13 @@
     String errorMessage = null;
 
     // Validation
-    if (idParam == null || idParam.trim().isEmpty() || 
-        fullName == null || fullName.trim().isEmpty()) {
+    if (idParam == null || idParam.trim().isEmpty()) {
+        response.sendRedirect("list_students.jsp?error=Invalid+ID");
+        return;
+    }
+    if (fullName == null || fullName.trim().isEmpty()) {
         errorMessage = "Missing required fields";
-        response.sendRedirect("list_students.jsp?error=" + errorMessage.replace(" ", "%20"));
+        response.sendRedirect("edit_student.jsp?id=" + idParam + "&error=" + URLEncoder.encode(errorMessage, "UTF-8"));
         return;
     }
 
@@ -30,9 +34,18 @@
         return;
     }
 
+    // Exercise 6.1: Email Validation
+    if (email != null && !email.trim().isEmpty()) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        if (!email.matches(emailRegex)) {
+            errorMessage = "Invalid email format.";
+            response.sendRedirect("edit_student.jsp?id=" + studentId + "&error=" + URLEncoder.encode(errorMessage, "UTF-8"));
+            return;
+        }
+    }
+
     Connection conn = null;
     PreparedStatement pstmt = null;
-
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(
@@ -52,17 +65,18 @@
         int rowsAffected = pstmt.executeUpdate();
         
         if (rowsAffected > 0) {
-            response.sendRedirect("list_students.jsp?message=Student information updated successfully!");
+            response.sendRedirect("list_students.jsp?message=" + URLEncoder.encode("Student information updated successfully!", "UTF-8"));
         } else {
             errorMessage = "Student not found or no changes made";
-            response.sendRedirect("edit_student.jsp?id=" + studentId + "&error=" + errorMessage.replace(" ", "%20"));
+            response.sendRedirect("edit_student.jsp?id=" + studentId + "&error=" + URLEncoder.encode(errorMessage, "UTF-8"));
         }
         
     } catch (SQLException e) {
         errorMessage = "Database error: " + e.getErrorCode();
-        response.sendRedirect("edit_student.jsp?id=" + studentId + "&error=" + errorMessage.replace(" ", "%20"));
+        response.sendRedirect("edit_student.jsp?id=" + studentId + "&error=" + URLEncoder.encode(errorMessage, "UTF-8"));
     } catch (Exception e) {
-        response.sendRedirect("edit_student.jsp?id=" + studentId + "&error=System error occurred");
+        errorMessage = "System error occurred: " + e.getMessage();
+        response.sendRedirect("edit_student.jsp?id=" + studentId + "&error=" + URLEncoder.encode(errorMessage, "UTF-8"));
     } finally {
         try {
             if (pstmt != null) pstmt.close();
