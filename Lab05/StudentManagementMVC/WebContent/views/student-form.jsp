@@ -69,12 +69,10 @@
                 <label>Email:</label>
                 <input type="email" name="email" value="${student.email}" required placeholder="email@example.com" />
 
-                <label>Major:</label>
-                <select name="major">
-                    <option value="CNTT" ${student.major == 'CNTT' ? 'selected' : ''}>Information Technology</option>
-                    <option value="Kinh Doanh" ${student.major == 'Kinh Doanh' ? 'selected' : ''}>Business Administration</option>
-                    <option value="Ngon Ngu" ${student.major == 'Ngon Ngu' ? 'selected' : ''}>Languages</option>
-                </select>
+                <label>Major:</label> 
+                <input type="text" id="major" name="major" 
+                       placeholder="e.g., Computer Science"
+                       value="<%= (request.getParameter("major") != null) ? request.getParameter("major") : ""%>">
 
                 <button type="submit">Save Student</button>
                 <br><br>
