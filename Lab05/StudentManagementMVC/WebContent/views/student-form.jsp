@@ -9,74 +9,84 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            <c:if test="${student != null}">Edit</c:if><c:if test="${student == null}">Add New</c:if> Student
-        </title>
-            <style>
-                .container {
-                    width: 50%;
-                    margin: 50px auto;
-                    padding: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                }
-                input, select {
-                    width: 100%;
-                    padding: 10px;
-                    margin: 5px 0 20px 0;
-                    display: inline-block;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    box-sizing: border-box;
-                }
-                button {
-                    width: 100%;
-                    background-color: #4CAF50;
-                    color: white;
-                    padding: 14px 20px;
-                    margin: 8px 0;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-                button:hover {
-                    background-color: #45a049;
-                }
-            </style>
-        </head>
-        <body>
+        <title>Student Form</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #f5f5f5;
+            }
+            .container {
+                width: 50%;
+                margin: 50px auto;
+                padding: 30px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            input {
+                width: 100%;
+                padding: 10px;
+                margin: 5px 0;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+            .error {
+                color: #721c24;
+                background: #f8d7da;
+                padding: 5px;
+                border-radius: 3px;
+                font-size: 0.9em;
+                display: block;
+                margin-bottom: 10px;
+            }
+            button {
+                background: #28a745;
+                color: white;
+                padding: 12px 30px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 10px;
+            }
+            a {
+                display: inline-block;
+                margin-left: 10px;
+                color: #6c757d;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
 
-            <div class="container">
-                <h2>
-                <c:if test="${student != null}">✏️ Edit Student</c:if>
-                <c:if test="${student == null}">➕ Add New Student</c:if>
+        <div class="container">
+            <h2>
+                <c:if test="${student != null && student.id > 0}">✏️ Edit Student</c:if>
+                <c:if test="${student == null || student.id == 0}">➕ Add New Student</c:if>
                 </h2>
 
                 <form action="student" method="post">
+                    <input type="hidden" name="action" value="${student.id > 0 ? 'update' : 'insert'}" />
+                <c:if test="${student.id > 0}"><input type="hidden" name="id" value="${student.id}" /></c:if>
 
-                    <input type="hidden" name="action" value="${student != null ? 'update' : 'insert'}" />
+                    <label>Student Code <span style="color:red">*</span></label>
+                    <input type="text" name="studentCode" value="${student.studentCode}" placeholder="e.g., SV001" ${student.id > 0 ? 'readonly' : ''} />
+                <c:if test="${not empty errorCode}"><span class="error">⚠️ ${errorCode}</span></c:if>
 
-                <c:if test="${student != null}">
-                    <input type="hidden" name="id" value="${student.id}" />
-                </c:if>
+                    <label>Full Name <span style="color:red">*</span></label>
+                    <input type="text" name="fullName" value="${student.fullName}" placeholder="Full Name" />
+                <c:if test="${not empty errorName}"><span class="error">⚠️ ${errorName}</span></c:if>
 
-                <label>Student Code:</label>
-                <input type="text" name="studentCode" value="${student.studentCode}" required placeholder="e.g., SV001" />
+                    <label>Email</label>
+                    <input type="text" name="email" value="${student.email}" placeholder="email@example.com" />
+                <c:if test="${not empty errorEmail}"><span class="error">⚠️ ${errorEmail}</span></c:if>
 
-                <label>Full Name:</label>
-                <input type="text" name="fullName" value="${student.fullName}" required placeholder="John Doe" />
-
-                <label>Email:</label>
-                <input type="email" name="email" value="${student.email}" required placeholder="email@example.com" />
-
-                <label>Major:</label> 
-                <input type="text" id="major" name="major" 
-                       placeholder="e.g., Computer Science"
-                       value="<%= (request.getParameter("major") != null) ? request.getParameter("major") : ""%>">
+                    <label>Major</label>
+                    <input type="text" name="major" value="${student.major}" placeholder="e.g., Computer Science" />
 
                 <button type="submit">Save Student</button>
-                <br><br>
-                <a href="student?action=list" style="text-decoration: none; text-align: center; display: block;">Back to List</a>
+                <a href="student?action=list">Cancel</a>
             </form>
         </div>
 
