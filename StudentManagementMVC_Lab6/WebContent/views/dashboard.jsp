@@ -200,6 +200,7 @@
                     ${sessionScope.role}
                 </span>
             </div>
+            <a href="change-password" style="color: white; margin-right: 15px; text-decoration: underline; font-size: 14px;">Change Password</a>
             <a href="logout" class="btn-logout">Logout</a>
         </div>
     </div>
