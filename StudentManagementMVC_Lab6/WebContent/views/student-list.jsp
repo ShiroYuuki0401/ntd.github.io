@@ -113,23 +113,24 @@
                 <button type="submit" class="btn" style="background: #6c757d;">Filter</button>
                 <c:if test="${not empty selectedMajor}"><a href="student?action=list" class="btn btn-danger">Clear</a></c:if>
                 </form>
-
+            <c:if test="${sessionScope.role == 'admin'}">
                 <a href="student?action=new" class="btn">➕ Add New</a>
-            </div>
+            </c:if>
+        </div>
 
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th><a href="student?action=sort&col=id&order=ASC">ID 🔼</a></th>
-                            <th><a href="student?action=sort&col=student_code&order=ASC">Code 🔼</a></th>
-                            <th><a href="student?action=sort&col=full_name&order=ASC">Full Name 🔼</a></th>
-                            <th>Email</th>
-                            <th>Major</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th><a href="student?action=sort&col=id&order=ASC">ID 🔼</a></th>
+                        <th><a href="student?action=sort&col=student_code&order=ASC">Code 🔼</a></th>
+                        <th><a href="student?action=sort&col=full_name&order=ASC">Full Name 🔼</a></th>
+                        <th>Email</th>
+                        <th>Major</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <c:forEach var="s" items="${listStudent}">
                         <tr>
                             <td>${s.id}</td>
@@ -138,8 +139,13 @@
                             <td>${s.email}</td>
                             <td>${s.major}</td>
                             <td>
-                                <a href="student?action=edit&id=${s.id}" style="color: #007bff; margin-right: 10px;">✏️ Edit</a>
-                                <a href="student?action=delete&id=${s.id}" style="color: #dc3545;" onclick="return confirm('Are you sure?');">🗑️ Delete</a>
+                                <c:if test="${sessionScope.role == 'admin'}">
+                                    <a href="student?action=edit&id=${s.id}" style="color: #007bff; margin-right: 10px;">✏️ Edit</a>
+                                    <a href="student?action=delete&id=${s.id}" style="color: #dc3545;" onclick="return confirm('Are you sure?');">🗑️ Delete</a>
+                                </c:if>
+                                <c:if test="${sessionScope.role != 'admin'}">
+                                    <span style="color: #999; font-style: italic;">View Only</span>
+                                </c:if>
                             </td>
                         </tr>
                     </c:forEach>
