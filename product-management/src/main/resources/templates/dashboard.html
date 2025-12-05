@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            margin: 10px 0 0;
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .grid-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.2em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #666;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .grid-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a th:href="@{/products}" class="back-btn">← Back to Products</a>
+        <h1>📊 Dashboard</h1>
+
+        <div class="stats-grid">
+            <div class="card">
+                <h3>Total Products</h3>
+                <p th:text="${totalProducts}">0</p>
+            </div>
+            <div class="card">
+                <h3>Inventory Value</h3>
+                <p th:text="'$' + ${#numbers.formatDecimal(totalValue, 1, 2)}">$0.00</p>
+            </div>
+            <div class="card">
+                <h3>Avg Price</h3>
+                <p th:text="'$' + ${#numbers.formatDecimal(avgPrice, 1, 2)}">$0.00</p>
+            </div>
+        </div>
+
+        <div class="grid-sections">
+            <!-- Category Breakdown -->
+            <div class="section">
+                <h2>📁 Products by Category</h2>
+                <ul>
+                    <li th:each="entry : ${categoryStats}">
+                        <span th:text="${entry.key}">Category</span>
+                        <span class="badge" th:text="${entry.value}">0</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Recent Products -->
+            <div class="section">
+                <h2>🆕 Recent Products</h2>
+                <ul>
+                    <li th:each="product : ${recentProducts}">
+                        <span th:text="${product.name}">Product Name</span>
+                        <span style="color: #666; font-size: 0.9em;"
+                            th:text="${#temporals.format(product.createdAt, 'MMM dd, HH:mm')}">Date</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Low Stock Alerts -->
+        <div class="section">
+            <h2>⚠️ Low Stock Alerts (Qty < 10)</h2>
+                    <div th:if="${lowStockProducts.isEmpty()}" style="color: green;">All stock levels are healthy! ✅
+                    </div>
+                    <div th:each="product : ${lowStockProducts}" class="alert-danger">
+                        <strong th:text="${product.name}">Product</strong>:
+                        Only <span th:text="${product.quantity}">0</span> remaining!
+                    </div>
+        </div>
+    </div>
+</body>
+
+</html>
