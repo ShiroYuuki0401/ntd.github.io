@@ -13,52 +13,57 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    
+
     @Value("${jwt.secret}")
     private String jwtSecret;
-    
+
     @Value("${jwt.expiration}")
     private long jwtExpiration;
-    
-    // Generate JWT token
+
+    // Generate JWT token from Authentication object (Login)
     public String generateToken(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return generateTokenFromUsername(userDetails.getUsername());
+    }
+
+    // NEW METHOD: Generate JWT token directly from username (Refresh Token)
+    public String generateTokenFromUsername(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
-        
+
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-        
+
         return Jwts.builder()
-                .subject(userDetails.getUsername())
+                .subject(username)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(key)
                 .compact();
     }
-    
+
     // Get username from token
     public String getUsernameFromToken(String token) {
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-        
+
         Claims claims = Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        
+
         return claims.getSubject();
     }
-    
+
     // Validate token
     public boolean validateToken(String token) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-            
+
             Jwts.parser()
                     .verifyWith(key)
                     .build()
                     .parseSignedClaims(token);
-            
+
             return true;
         } catch (MalformedJwtException ex) {
             System.out.println("Invalid JWT token");

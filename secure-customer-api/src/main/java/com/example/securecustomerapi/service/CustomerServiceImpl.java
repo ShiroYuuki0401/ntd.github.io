@@ -7,7 +7,6 @@ import com.example.securecustomerapi.entity.Customer;
 import com.example.securecustomerapi.exception.DuplicateResourceException;
 import com.example.securecustomerapi.exception.ResourceNotFoundException;
 import com.example.securecustomerapi.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,6 @@ public class CustomerServiceImpl implements CustomerService {
     
     private final CustomerRepository customerRepository;
     
-    @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
